@@ -9,7 +9,7 @@ book.save()
 
 #### Retrieve the Book
 ```python
-book = Book.objects.get(title="1984")
+book = Book.objects.create(title="1984")
 print(book)
 print(book.author)
 print(book.publication_year)
