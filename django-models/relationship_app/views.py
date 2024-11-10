@@ -1,5 +1,6 @@
 from .models import Library
 from django.views.generic.detail import DetailView
+from .views import list_books
 
 
 def list_books(request):
