@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['8000-nanioal-alxdjangolearnl-8x2gpuinqry.ws-eu116.gitpod.io']
 
-AUTH_USER_MODEL = 'relationship_app.CustomUser'
+
 
 
 # Application definition

@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-#64$ys5z%jpm&h4gd=%ecd=$q9cf(^w3i(6)aqt^p1eb1h_@#y
 DEBUG = True
 
 ALLOWED_HOSTS = ['8000-nanioal-alxdjangolearnl-5ts481xbrnn.ws-eu116.gitpod.io']
+AUTH_USER_MODEL = 'bookshelf.CustomUser'
 
 
 # Application definition
