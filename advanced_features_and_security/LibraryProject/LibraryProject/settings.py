@@ -26,6 +26,9 @@ SECURE_HSTS_SECONDS = 31536000  # 1 year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
+# Add the SECURE_PROXY_SSL_HEADER setting 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # Ensure cookies are sent over HTTPS only
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
@@ -54,6 +57,14 @@ ALLOWED_HOSTS = ['8000-nanioal-alxdjangolearnl-5ts481xbrnn.ws-eu116.gitpod.io']
 # Static files settings
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Additional settings 
+DATABASES = { 
+    'default': { 
+        'ENGINE': 'django.db.backends.sqlite3', 
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'), 
+        } 
+    }
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
