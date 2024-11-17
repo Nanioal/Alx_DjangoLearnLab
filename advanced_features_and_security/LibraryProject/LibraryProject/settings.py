@@ -11,6 +11,27 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+
+# Set DEBUG to False in production
+DEBUG = False
+
+# Configure browser security settings
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Ensure cookies are sent over HTTPS only
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# Other existing settings
+ALLOWED_HOSTS = ['yourdomain.com']
+
+# Static files settings
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +60,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bookshelf',
+    'csp',
 ]
 
 MIDDLEWARE = [
@@ -49,7 +71,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
+CSP_DEFAULT_SRC = ("'self'",) 
+CSP_STYLE_SRC = ("'self'", 'https://maxcdn.bootstrapcdn.com',) 
+CSP_SCRIPT_SRC = ("'self'", 'https://ajax.googleapis.com',)
 
 ROOT_URLCONF = 'LibraryProject.urls'
 
