@@ -12,6 +12,29 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import os
+
+# Basic settings
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SECRET_KEY = 'your-secret-key'
+DEBUG = False
+ALLOWED_HOSTS = ['8000-nanioal-alxdjangolearnl-5ts481xbrnn.ws-eu116.gitpod.io']
+
+# Secure settings for HTTPS
+SECURE_SSL_REDIRECT = True
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Ensure cookies are sent over HTTPS only
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Security headers
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
 
 # Set DEBUG to False in production
 DEBUG = False
@@ -26,7 +49,7 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
 # Other existing settings
-ALLOWED_HOSTS = ['yourdomain.com']
+ALLOWED_HOSTS = ['8000-nanioal-alxdjangolearnl-5ts481xbrnn.ws-eu116.gitpod.io']
 
 # Static files settings
 STATIC_URL = '/static/'
