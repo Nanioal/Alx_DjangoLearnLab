@@ -9,9 +9,11 @@ class BookAPITestCase(APITestCase):
     def setUp(self):
         self.client = APIClient()
         self.user = User.objects.create_user(username='testuser', password='testpass')
-        self.client.force_authenticate(user=self.user)
         self.author = Author.objects.create(name='Author Test')
         self.book = Book.objects.create(title='Book Test', publication_year=2022, author=self.author)
+
+        # Authenticate the user
+        self.client.login(username='testuser', password='testpass')
     
     def test_create_book(self):
         url = reverse('book-create')
@@ -67,3 +69,4 @@ class BookAPITestCase(APITestCase):
         response = self.client.get(url, {'ordering': 'publication_year'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0]['title'], 'Another Book')
+
