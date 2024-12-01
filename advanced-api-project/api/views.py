@@ -3,37 +3,39 @@ from django.http import HttpResponse
 from rest_framework import viewsets, generics, permissions
 from .models import Author, Book
 from .serializers import AuthorSerializer, BookSerializer
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated # Add these imports
 
 
 # ListView for retrieving all books
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]  # Read-only access for unauthenticated users
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Use IsAuthenticatedOrReadOnly for ListView
 
 # DetailView for retrieving a single book by ID
 class BookDetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]  # Read-only access for unauthenticated users
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Use IsAuthenticatedOrReadOnly for DetailView
 
 # CreateView for adding a new book
 class BookCreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]  # Only authenticated users can create
+    permission_classes = [IsAuthenticated]  # Only authenticated users can create
 
 # UpdateView for modifying an existing book
 class BookUpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]  # Only authenticated users can update
+    permission_classes = [IsAuthenticated]  # Only authenticated users can update
 
 # DeleteView for removing a book
 class BookDeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]  # Only authenticated users can delete
+    permission_classes = [IsAuthenticated]  # Only authenticated users can delete
+
 
 def home_view(request):
     return HttpResponse("Welcome to the Advanced API Project")
