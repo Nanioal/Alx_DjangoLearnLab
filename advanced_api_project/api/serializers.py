@@ -20,6 +20,7 @@ class AuthorSerializer(serializers.ModelSerializer):
         model = Author
         fields = ['name', 'books']
 
+
 # BookSerializer serializes all fields of the Book model
 class BookSerializer(serializers.ModelSerializer):
     class Meta:

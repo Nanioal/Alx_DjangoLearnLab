@@ -1,4 +1,5 @@
 from django.db import models
+from django.db import models
 
 class Author(models.Model):
     name = models.CharField(max_length=100)
@@ -13,6 +14,8 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+
+# Create your models here.
 
 
 # The Author model represents an author with a name field
@@ -31,5 +34,3 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
-
-# Create your models here.
