@@ -6,6 +6,8 @@ from .serializers import AuthorSerializer, BookSerializer
 
 def home_view(request):
     return HttpResponse("Welcome to the Advanced API Project")
+def example_view(request): 
+    return render(request, 'example_template.html')
 class AuthorViewSet(viewsets.ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
