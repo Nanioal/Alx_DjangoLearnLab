@@ -6,7 +6,7 @@
     <p>{{ object.content }}</p>
     <p><small>Posted by {{ object.author }} on {{ object.date_posted }}</small></p>
     {% if user.is_authenticated and user == object.author %}
-      <a href="{% url 'post-update' object.pk %}">Edit</a>
+      <a href="{% url 'post-update' object.pk %}">Edit</a>  <!-- Updated link -->
       <a href="{% url 'post-delete' object.pk %}">Delete</a>
     {% endif %}
   </article>
