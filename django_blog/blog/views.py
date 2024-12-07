@@ -14,6 +14,20 @@ from .models import Post, Comment
 from .forms import CommentForm
 from django.urls import reverse
 
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from .models import Post, Comment
+from .forms import CommentForm
+
+class PostListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'
+    context_object_name = 'posts'
+    ordering = ['-date_posted']
+
 class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
@@ -24,20 +38,18 @@ class PostDetailView(DetailView):
         context['comment_form'] = CommentForm()
         return context
 
-@login_required
-def add_comment(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.author = request.user
-            comment.save()
-            return redirect('post-detail', pk=post.pk)
-    else:
-        form = CommentForm()
-    return render(request, 'blog/add_comment.html', {'form': form})
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/add_comment.html'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.post = get_object_or_404(Post, pk=self.kwargs['pk'])
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('post-detail', kwargs={'pk': self.kwargs['pk']})
 
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Comment
@@ -63,6 +75,22 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         comment = self.get_object()
         return self.request.user == comment.author
+
+@login_required
+def add_comment(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            return redirect('post-detail', pk=post.pk)
+    else:
+        form = CommentForm()
+    return render(request, 'blog/add_comment.html', {'form': form})
+
 
 class PostListView(ListView):
     model = Post
