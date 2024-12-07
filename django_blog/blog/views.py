@@ -21,6 +21,29 @@ from django.urls import reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post, Comment
 from .forms import CommentForm
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.db.models import Q
+from .models import Post, Comment
+from .forms import CommentForm
+
+# Existing views...
+
+class SearchResultsView(ListView):
+    model = Post
+    template_name = 'blog/search_results.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        return Post.objects.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)
+        ).distinct()
 
 class PostListView(ListView):
     model = Post
