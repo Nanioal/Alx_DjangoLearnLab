@@ -24,7 +24,7 @@
       </div>
     {% endfor %}
     <h4>Add a comment:</h4>
-    <form method="post" action="{% url 'add-comment' object.pk %}">
+    <form method="post" action="{% url 'comment-create' object.pk %}">
       {% csrf_token %}
       {{ comment_form.as_p }}
       <button type="submit">Post Comment</button>
