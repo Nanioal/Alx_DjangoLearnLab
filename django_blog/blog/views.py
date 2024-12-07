@@ -98,6 +98,13 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         comment = self.get_object()
         return self.request.user == comment.author
+class PostByTagListView(ListView): 
+    model = Post 
+    template_name = 'blog/post_by_tag.html' 
+    context_object_name = 'posts' 
+    def get_queryset(self): 
+        tag_slug = self.kwargs.get('tag_slug') 
+        return Post.objects.filter(tags__slug=tag_slug)
 
 @login_required
 def add_comment(request, pk):

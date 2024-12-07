@@ -8,7 +8,8 @@ from .views import (
     CommentCreateView,
     CommentUpdateView,
     CommentDeleteView,
-    SearchResultsView
+    SearchResultsView,
+    PostByTagListView
 )
 
 urlpatterns = [
@@ -21,6 +22,7 @@ urlpatterns = [
     path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='comment-update'),
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment-delete'),
     path('search/', SearchResultsView.as_view(), name='search-results'),
+    path('tags/<slug:tag_slug>/', PostByTagListView.as_view(), name='tagged'), # Add this for tagged posts ]
 ]
 
 from django.urls import path, include
