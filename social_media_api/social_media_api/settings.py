@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     'rest_framework', 
     'accounts',
     'rest_framework.authtoken',
+    # social_media_api/settings.py
+    'posts',
 ]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
