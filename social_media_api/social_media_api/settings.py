@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-pg5y1wuelmae251t&s=pn4$f06rmd@^^47m9f5ia%i@&2%$-@7"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     # social_media_api/settings.py
     'posts',
+    'notifications',
 ]
 
 
@@ -83,6 +84,11 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
+        'NAME': 'yourdbname',
+        'USER': 'Rediet', 
+        'PASSWORD': 'Ab42en16zer92', 
+        'HOST': 'yourdbhost',
+        'PORT': '8000',
     }
 }
 
@@ -127,3 +133,9 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+#Security settings 
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY' 
+SECURE_CONTENT_TYPE_NOSNIFF = True 
+SECURE_SSL_REDIRECT = True

@@ -78,7 +78,7 @@ class FeedView(APIView):
         user = request.user
         following_users = user.following.all()
         posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
-        serializer = PostSerializer(posts, many=True
+        serializer = PostSerializer(posts, many=True)
 
 class PostPagination(PageNumberPagination):
     page_size = 10
