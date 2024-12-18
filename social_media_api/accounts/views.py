@@ -1,7 +1,7 @@
 # accounts/views.py
 
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
@@ -17,7 +17,7 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
 
 class LoginView(ObtainAuthToken):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]  # Corrected to permissions.IsAuthenticated
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data, context={'request': request})
@@ -27,7 +27,7 @@ class LoginView(ObtainAuthToken):
         return Response({'token': token.key})
 
 class FollowUserView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]  # Corrected to permissions.IsAuthenticated
 
     def post(self, request, user_id):
         user_to_follow = get_object_or_404(CustomUser, id=user_id)
@@ -35,10 +35,5 @@ class FollowUserView(generics.GenericAPIView):
         return JsonResponse({"message": "User followed"})
 
 class UnfollowUserView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request, user_id):
-        user_to_unfollow = get_object_or_404(CustomUser, id=user_id)
-        request.user.following.remove(user_to_unfollow)
-        return JsonResponse({"message": "User unfollowed"})
+    permission_classes = [permissions.IsAuthenticated] 
 
