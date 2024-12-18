@@ -15,17 +15,32 @@ from .serializers import PostSerializer, CommentSerializer
 
 # posts/views.py
 
-from rest_framework import viewsets, permissions
+# posts/views.py
+
+from rest_framework import viewsets, generics, filters, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.shortcuts import get_object_or_404
 from .models import Post, Like
-from .serializers import PostSerializer
+from .serializers import PostSerializer, CommentSerializer
 from notifications.models import Notification
+
+class PostPagination(PageNumberPagination):
+    page_size = 10
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    pagination_class = PostPagination
+    permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title', 'content']
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
@@ -35,7 +50,7 @@ class LikePostView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        post = get_object_or_404(Post, pk=pk)
+        post = generics.get_object_or_404(Post, pk=pk)  # Using generics.get_object_or_404
         like, created = Like.objects.get_or_create(user=request.user, post=post)
         if created:
             Notification.objects.create(
@@ -51,10 +66,19 @@ class UnlikePostView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        post = get_object_or_404(Post, pk=pk)
-        like = get_object_or_404(Like, user=request.user, post=post)
+        post = generics.get_object_or_404(Post, pk=pk)  # Using generics.get_object_or_404
+        like = generics.get_object_or_404(Like, user=request.user, post=post)
         like.delete()
         return Response({'message': 'Post unliked'})
+
+class FeedView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        following_users = user.following.all()
+        posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
+        serializer = PostSerializer(posts, many=True
 
 class PostPagination(PageNumberPagination):
     page_size = 10
